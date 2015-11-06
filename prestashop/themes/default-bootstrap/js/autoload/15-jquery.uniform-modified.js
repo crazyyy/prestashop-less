@@ -1069,17 +1069,13 @@ Enjoy!
     };
 }(this, jQuery));
 
+$(window).load(function () {
+	$("select.form-control,input[type='checkbox']:not(.comparator), input[type='radio'],input#id_carrier2, input[type='file']").uniform();
+});
 
-if (typeof isMobile != 'undefined' && !isMobile){
-
-    $(window).load(function () {
-    	$("select.form-control,input[type='checkbox']:not(.comparator), input[type='radio'],input#id_carrier2, input[type='file']").uniform();
-    });
-
-    // refresh uniform selects on document width change
-    $(window).resize(
-    	function () {
-    		$.uniform.update("select.form-control, input[type='file']");
-    	}
-    );
-}
+// refresh uniform selects on document width change
+$(window).resize(
+	function () {
+		$.uniform.update("select.form-control, input[type='file']");
+	}
+);

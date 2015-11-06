@@ -1,5 +1,5 @@
 {*
-* 2007-2015 PrestaShop
+* 2007-2014 PrestaShop
 *
 * NOTICE OF LICENSE
 *
@@ -18,7 +18,7 @@
 * needs please refer to http://www.prestashop.com for more information.
 *
 *  @author PrestaShop SA <contact@prestashop.com>
-*  @copyright  2007-2015 PrestaShop SA
+*  @copyright  2007-2014 PrestaShop SA
 *  @license    http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 *  International Registered Trademark & Property of PrestaShop SA
 *}
@@ -39,11 +39,9 @@
 				<div class="hide_desc">
 					{$manufacturer->description}
 				</div>
-				{if !empty($manufacturer->description)}
-					<a href="#" class="lnk_more" onclick="$(this).prev().slideDown('slow'); $(this).hide();$(this).prev().prev().hide(); return false;">
-						{l s='More'}
-					</a>
-				{/if}
+				<a href="#" class="lnk_more" onclick="$(this).prev().slideDown('slow'); $(this).hide();$(this).prev().prev().hide(); return false;">
+					{l s='More'}
+				</a>
 			{else}
 				<div>
 					{$manufacturer->description}
@@ -60,7 +58,7 @@
 			</div>
 	    	<div class="top-pagination-content clearfix">
 	        	{include file="./product-compare.tpl"}
-	            {include file="$tpl_dir./pagination.tpl" no_follow=1}
+	            {include file="$tpl_dir./pagination.tpl"}
 	        </div>
 		</div>
 
@@ -69,10 +67,10 @@
 		<div class="content_sortPagiBar">
 	        <div class="bottom-pagination-content clearfix">
 	        	{include file="./product-compare.tpl"}
-				{include file="./pagination.tpl" no_follow=1 paginationId='bottom'}
+				{include file="./pagination.tpl" paginationId='bottom'}
 	        </div>
 		</div>
 	{else}
 		<p class="alert alert-warning">{l s='No products for this manufacturer.'}</p>
-	{/if}
+	{/if} 
 {/if}
