@@ -4,16 +4,20 @@
 
 
 .breadcrumb {
-  padding: 8px 15px;
   margin-bottom: $line-height-computed;
+  padding: 8px 15px;
+
   list-style: none;
-  background-color: $breadcrumb-bg;
+
   border-radius: $border-radius-base;
+  background-color: $breadcrumb-bg;
   > li {
     display: inline-block;
-    &+li:before {
-      content: "/\00a0"; // Unicode space added since inline-block means non-collapsing white-space
+    & + li:before {
       padding: 0 5px;
+
+      content: '/\00a0'; // Unicode space added since inline-block means non-collapsing white-space
+
       color: $breadcrumb-color;
     }
   }

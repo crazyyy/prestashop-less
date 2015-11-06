@@ -1,0 +1,7 @@
+header {
+  .row {
+    #header_logo {
+      @extend .col-sm-4;
+    }
+  }
+}

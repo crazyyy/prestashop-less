@@ -6,15 +6,18 @@
 // Base class
 .panel {
   margin-bottom: $line-height-computed;
-  background-color: $panel-bg;
+
   border: 1px solid transparent;
   border-radius: $panel-border-radius;
+  background-color: $panel-bg;
+
   @include box-shadow(0 1px 1px rgba(0,0,0,.05));
 }
 
 // Panel contents
 .panel-body {
   padding: 15px;
+
   @include clearfix();
 }
 
@@ -27,10 +30,8 @@
 .panel {
   > .list-group {
     margin-bottom: 0;
-
     .list-group-item {
       border-width: 1px 0;
-
       // Remove border radius for top one
       &:first-child {
         @include border-top-radius(0);
@@ -68,7 +69,9 @@
 // Optional heading
 .panel-heading {
   padding: 10px 15px;
+
   border-bottom: 1px solid transparent;
+
   @include border-top-radius($panel-border-radius - 1);
 }
 
@@ -85,8 +88,10 @@
 // Optional footer (stays gray in every modifier class)
 .panel-footer {
   padding: 10px 15px;
-  background-color: $panel-footer-bg;
+
   border-top: 1px solid $panel-inner-border;
+  background-color: $panel-footer-bg;
+
   @include border-bottom-radius($panel-border-radius - 1);
 }
 
@@ -99,14 +104,15 @@
 .panel-group {
   // Tighten up margin so it's only between panels
   .panel {
-    margin-bottom: 0;
-    border-radius: $panel-border-radius;
     overflow: hidden; // crop contents when collapsed
+
+    margin-bottom: 0;
+
+    border-radius: $panel-border-radius;
     + .panel {
       margin-top: 5px;
     }
   }
-
   .panel-heading {
     border-bottom: 0;
     + .panel-collapse .panel-body {
@@ -119,11 +125,7 @@
       border-bottom: 1px solid $panel-inner-border;
     }
   }
-
   // New subcomponent for wrapping collapsable content for proper animations
-  .panel-collapse {
-
-  }
 }
 
 

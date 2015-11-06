@@ -8,46 +8,49 @@
 
 // Core styles
 .btn {
-  display: inline-block;
-  padding: $padding-base-vertical $padding-base-horizontal;
-  margin-bottom: 0; // For input.btn
   font-size: $font-size-base;
   font-weight: $btn-font-weight;
   line-height: $line-height-base;
+
+  display: inline-block;
+
+  margin-bottom: 0; // For input.btn
+  padding: $padding-base-vertical $padding-base-horizontal;
+
+  cursor: pointer;
   text-align: center;
   vertical-align: middle;
-  cursor: pointer;
+  white-space: nowrap;
+
   border: 1px solid transparent;
   border-radius: $border-radius-base;
-  white-space: nowrap;
-  @include user-select(none);
 
+  @include user-select(none);
   &:focus {
     @include tab-focus();
   }
-
   &:hover,
   &:focus {
-    color: $btn-default-color;
     text-decoration: none;
-  }
 
+    color: $btn-default-color;
+  }
   &:active,
   &.active {
     outline: 0;
     background-image: none;
+
     @include box-shadow(inset 0 3px 5px rgba(0,0,0,.125));
   }
-
   &.disabled,
   &[disabled],
   fieldset[disabled] & {
     cursor: not-allowed;
     pointer-events: none; // Future-proof disabling of clicks
+
     @include opacity(.65);
     @include box-shadow(none);
   }
-
 }
 
 
@@ -83,16 +86,18 @@
 
 // Make a button look and behave like a link
 .btn-link {
-  color: $link-color;
   font-weight: normal;
-  cursor: pointer;
-  border-radius: 0;
 
+  cursor: pointer;
+
+  color: $link-color;
+  border-radius: 0;
   &,
   &:active,
   &[disabled],
   fieldset[disabled] & {
     background-color: transparent;
+
     @include box-shadow(none);
   }
   &,
@@ -103,16 +108,18 @@
   }
   &:hover,
   &:focus {
-    color: $link-hover-color;
     text-decoration: underline;
+
+    color: $link-hover-color;
     background-color: transparent;
   }
   &[disabled],
   fieldset[disabled] & {
     &:hover,
     &:focus {
-      color: $btn-link-disabled-color;
       text-decoration: none;
+
+      color: $btn-link-disabled-color;
     }
   }
 }
@@ -140,9 +147,10 @@
 
 .btn-block {
   display: block;
+
   width: 100%;
-  padding-left: 0;
   padding-right: 0;
+  padding-left: 0;
 }
 
 // Vertically space out multiple block buttons
@@ -151,9 +159,9 @@
 }
 
 // Specificity overrides
-input[type="submit"],
-input[type="reset"],
-input[type="button"] {
+input[type='submit'],
+input[type='reset'],
+input[type='button'] {
   &.btn-block {
     width: 100%;
   }
