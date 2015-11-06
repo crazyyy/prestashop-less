@@ -1,72 +1,160 @@
-'use strict';
+var gulp = require('gulp'),
+  gutil = require('gulp-util'),
+  es = require('event-stream'),
+  runSequence = require('run-sequence'),
+  browserSync = require('browser-sync'),
+  reload =  browserSync.reload,
+  pngquant = require('imagemin-pngquant'),
+  plugins = require("gulp-load-plugins")({
+    pattern: ['gulp-*', 'gulp.*'],
+    replaceString: /\bgulp[\-.]/
+  });
 
-// Include gulp
-var gulp = require('gulp');
+var domaindevelop = 'prestashop.dev',
+  psProjectDir = 'prestashop',
+  themeName = 'default-bootstrap';
 
-// Include Our Plugins
-var jshint = require('gulp-jshint');
-var stylish = require('jshint-stylish');
-var sass = require('gulp-ruby-sass');
-var path = require('path');
-var minifycss = require('gulp-minify-css');
-var changed = require('gulp-changed');
+var AUTOPREFIXER_BROWSERS = [
+  'ie >= 8', 'ie_mob >= 10', 'ff >= 20', 'chrome >= 24', 'safari >= 5', 'opera >= 12', 'ios >= 7', 'android >= 2.3', '> 1%', 'last 4 versions', 'bb >= 10'
+];
 
-//General
-var psProjectDir = 'prestashop';
-var themeName = 'default-bootstrap';
-var projectDir = path.resolve(__dirname);
+var basePaths = {
+  src: 'assets/',
+  dest: './' + psProjectDir + '/themes/' + themeName + '/';
+};
 
 var paths = {
-    prestashopSassFiles: './' + psProjectDir + '/themes/default-bootstrap/sass/**/*.scss',
-    prestashopCssDir: './' + psProjectDir + '/themes/default-bootstrap/css',
-    prestashopJsFiles: './' + psProjectDir + '/themes/default-bootstrap/js/**/*.js',
-    prestashopJsDir: './' + psProjectDir + '/themes/default-bootstrap/js/'
-};
-var sassConfig = {
-    style: 'expanded',
-    compass: true,
-    loadPath: [projectDir + '/prestashop/themes/'+ themeName +'/sass']
+  images: {
+    src: basePaths.src + 'img/',
+    srcimg: basePaths.src + 'img/**/*.{png,jpg,jpeg,gif}',
+    dest: basePaths.dest + 'img/'
+  },
+  scripts: {
+    src: basePaths.src + 'js/**',
+    dest: basePaths.dest + 'js/'
+  },
+  styles: {
+    src: basePaths.src + 'sass/',
+    dest: basePaths.dest + 'css/'
+  },
+  fonts: {
+    src: basePaths.src + 'fonts/**',
+    dest: basePaths.dest + 'fonts/'
+  },
+  sprite: {
+    src: basePaths.src + 'sprite/*'
+  }
 };
 
-/*
-* Custom routine to cancel gulp when jshint is failed
-* (Currently not implemented in gulp-jshint :/)
-*/
-var map = require('map-stream');
-var exitOnJshintError = map(function (file, cb) {
-    if (!file.jshint.success) {
-        console.error('jshint failed');
-        process.exit(1);
+
+var appFiles = {
+  styles: paths.styles.src + '**/*.scss',
+  scripts: [paths.scripts.src]
+};
+var spriteConfig = {
+  imgName: 'sprite.png',
+  cssName: '_sprite.scss',
+  imgPath: '../img/' + 'sprite.png'
+};
+var changeEvent = function (evt) {
+  gutil.log('File', gutil.colors.cyan(evt.path.replace(new RegExp('/.*(?=/' + basePaths.src + ')/'), '')), 'was', gutil.colors.magenta(evt.type));
+};
+
+// Copy web fonts to dist
+gulp.task('fonts', function () {
+  return gulp.src(paths.fonts.src)
+    .pipe(gulp.dest(paths.fonts.dest))
+    .pipe(plugins.size({title: 'fonts'}));
+});
+
+// Temp image cp
+gulp.task('imagecp', function () {
+  return gulp.src(paths.images.src)
+    .pipe(gulp.dest(paths.images.dest))
+    .pipe(plugins.size({title: 'img copy'}));
+});
+
+// Optimize images
+gulp.task('images', function () {
+  return gulp.src(paths.images.srcimg)
+    .pipe(plugins.cache(plugins.imagemin({
+      progressive: true,
+      interlaced: true,
+        svgoPlugins: [{removeViewBox: false}],
+        use: [pngquant()]
+    })))
+    .pipe(gulp.dest(paths.images.dest))
+    .pipe(plugins.size({title: 'images'}));
+});
+
+gulp.task('sprite', function () {
+  var spriteData = gulp.src(paths.sprite.src + '*.png').pipe(plugins.spritesmith({
+    imgName: spriteConfig.imgName,
+    cssName: spriteConfig.cssName,
+    imgPath: spriteConfig.imgPath,
+    cssVarMap: function (sprite) {
+      sprite.name = 'sprite-' + sprite.name;
     }
+  }));
+  spriteData.img
+    .pipe(plugins.size({showFiles: true}))
+    .pipe(plugins.cache(
+      plugins.imageOptimization({
+        optimizationLevel: 3,
+        progressive: true,
+        interlaced: true
+      })
+    ))
+    .pipe(gulp.dest(paths.images.dest))
+    .pipe(plugins.size({showFiles: true}))
+  spriteData.css.pipe(gulp.dest(paths.styles.src));
 });
 
-/* Task
-* Lint all prestashop theme javascript files
-*/
-gulp.task('lint', function() {
-    return gulp.src(paths.prestashopJsFiles)
-        .pipe(jshint())
-        .pipe(jshint.reporter('jshint-stylish'))
-        .pipe(exitOnJshintError);
+// Optimize script
+gulp.task('scripts', function () {
+  gulp.src(appFiles.scripts)
+    .pipe(plugins.if('*.js', plugins.uglify()))
+    .pipe(plugins.size({showFiles: true}))
+    .pipe(gulp.dest(paths.scripts.dest));
 });
 
-/* Task
-* Compile our prestashop SASS files
-*/
-gulp.task('sass', function() {
-    return gulp.src(paths.prestashopSassFiles)
-        .pipe(changed(paths.prestashopCssDir,{ extension: '.css' }))
-        .pipe(sass(sassConfig))
-        .pipe(gulp.dest(paths.prestashopCssDir));
+// Compile and automatically prefix stylesheets
+gulp.task('styles', function () {
+  // For best performance, don't add Sass partials to `gulp.src`
+  return gulp.src(appFiles.styles)
+    .pipe(plugins.sourcemaps.init())
+    .pipe(plugins.sass({
+      precision: 10,
+      onError: console.error.bind(console, 'Sass error:')
+    }))
+    .pipe(plugins.autoprefixer({browsers: AUTOPREFIXER_BROWSERS}))
+    .pipe(plugins.sourcemaps.write())
+    .pipe(gulp.dest(paths.styles.dest))
+    // Concatenate and minify styles
+    .pipe(plugins.if('*.css', plugins.csso()))
+    .pipe(gulp.dest(paths.styles.dest))
+    .pipe(plugins.size({title: 'styles'}));
 });
 
-/* Task
-* Watch Files For Changes
-*/
-gulp.task('watch', function() {
-    gulp.watch(paths.prestashopJsFiles, ['lint']);
-    gulp.watch(paths.prestashopSassFiles, ['sass']);
-});
+gulp.task('serve', ['sprite', 'images', 'scripts', 'styles', 'fonts'], function () {
 
-// Default Task
-gulp.task('default', ['lint', 'sass', 'watch']);
+  browserSync({
+    notify: false,
+    proxy: domaindevelop,
+    host: domaindevelop,
+    port: 9192
+  });
+
+  // watch for changes
+  gulp.watch([
+    basePaths.dest + '*.tpl'
+  ]).on('change', reload);
+
+  gulp.watch(paths.sprite.src, ['sprite', 'images', 'styles', reload]);
+  gulp.watch(paths.images.srcimg, ['images', reload]);
+  gulp.watch(appFiles.styles, ['styles', reload]);
+  gulp.watch(paths.sprite.src, ['styles', reload]);
+  gulp.watch(paths.fonts.src, ['fonts', reload]);
+  gulp.watch(appFiles.scripts, ['scripts', reload]);
+
+});
