@@ -104,8 +104,7 @@
   }
   .popover {
     border-color: $base-border-color;
-
-    @include border-radius(0);
+    border-radius: 0;
   }
   .product-image-container,
   .product-name {

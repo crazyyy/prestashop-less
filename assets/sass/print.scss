@@ -34,7 +34,7 @@
   }
   .product_attributes,
   .box-cart-bottom {
-    @include box-shadow(none);
+    box-shadow: none;
   }
   .pb-left-column #views_block {
     width: 278px !important;

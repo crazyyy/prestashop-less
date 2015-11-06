@@ -22,8 +22,6 @@
   padding: 23px 0 0 0;
 
   background: url(../img/contact-form.png) repeat-x $light-background;
-
-  @include box-shadow(rgba(black, .17) 0px 5px 13px);
   fieldset {
     padding: 0 19px 21px 19px;
 

@@ -69,11 +69,7 @@ ul.product_list {
           width: 85px;
           height: 130px;
 
-          -webkit-transform: rotate(45deg);
-             -moz-transform: rotate(45deg);
-              -ms-transform: rotate(45deg);
-               -o-transform: rotate(45deg);
-                  transform: rotate(45deg);
+          transform: rotate(45deg);
           pointer-events: all;
 
           background-color: rgba(208, 208, 211, .57);
@@ -87,11 +83,7 @@ ul.product_list {
             color: black;
           }
           i:before {
-            -webkit-transform: rotate(315deg);
-               -moz-transform: rotate(315deg);
-                -ms-transform: rotate(315deg);
-                 -o-transform: rotate(315deg);
-                    transform: rotate(315deg);
+            transform: rotate(315deg);
           }
         }
       }
@@ -132,8 +124,6 @@ ul.product_list {
 
       color: #777676;
       background: rgba(255,255,255,.82);
-
-      @include box-shadow(rgba(black, .16) 0 2px 8px);
       @media (max-width: $screen-md-max) {
         display: none;
       }

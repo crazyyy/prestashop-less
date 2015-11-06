@@ -1,5 +1,6 @@
 *.log
 thumbs.db
+.idea
 *.sublime-project
 *.sublime-workspace
 .sass-cache

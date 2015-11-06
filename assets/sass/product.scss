@@ -73,12 +73,9 @@ a.fancybox-nav {
         padding: 10px 0;
 
         text-align: center;
-        text-align: center;
 
         color: #777676;
         background: rgba(255,255,255,.5);
-
-        @include box-shadow(0 2px 8px rgba(0,0,0,.16));
         &:after {
           font-family: $font-icon;
           font-size: 20px;
