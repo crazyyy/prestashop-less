@@ -1,4 +1,4 @@
-@import '../../_theme_variables';
+@import '../../../_theme_variables';
 /*** ESSENTIAL STYLES ***/
 .sf-contener {
   float: left;
@@ -129,8 +129,6 @@
   display: none;
 
   padding: 12px 0 18px 0;
-
-  @include box-shadow(rgba(black, .20) 0px 5px 13px);
   @media (max-width: $screen-xs-max) {
     // max 767px
     top: 0;
@@ -143,8 +141,6 @@
 
   opacity: 1 !important;
   background: none;
-
-  @include box-shadow(rgba(black, 0) 0px 0px 0px);
 }
 .sf-menu li li li ul {
   padding: 0 0 0 20px;

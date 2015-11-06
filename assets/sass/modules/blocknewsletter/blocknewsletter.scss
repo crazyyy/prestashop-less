@@ -75,9 +75,6 @@
         color: $light-text-color;
         border-color: #515151;
         background: #3c3c3c;
-        &:focus {
-          @include box-shadow(black 0px 0px 0px);
-        }
       }
       .button-small {
         margin-left: -43px;

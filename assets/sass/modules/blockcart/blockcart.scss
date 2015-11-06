@@ -8,26 +8,32 @@
   float: right;
 
   padding-top: 50px;
-  > a:first-child {
-    &:after {
-      font-family: $font-icon;
-      font-size: 18px;
+  > a {
+    &:first-child {
+      &:after {
+        font-family: $font-icon;
+        font-size: 18px;
 
-      display: inline-block;
-      float: right;
+        display: inline-block;
+        float: right;
 
-      padding: 6px 0 0 0;
+        padding: 6px 0 0 0;
 
-      content: '\f0d7';
+        content: '\f0d7';
 
-      color: #686666;
+        color: #686666;
+      }
     }
   }
-  > a:first-child:hover {
-    &:after {
-      padding: 4px 0 2px 0;
+  > a {
+    &:first-child {
+      &:hover {
+        &:after {
+          padding: 4px 0 2px 0;
 
-      content: '\f0d8';
+          content: '\f0d8';
+        }
+      }
     }
   }
 }
@@ -377,9 +383,8 @@
   width: 100%;
   height: 100%;
 
+  opacity: .2;
   background-color: #000;
-
-  @include opacity(.20);
 }
 
 * html .layer_cart_overlay {
@@ -388,7 +393,7 @@
 
   margin-left: -160px;
 
-  @include opacity(.20);
+  opacity: .2;
 }
 
 #layer_cart {
@@ -401,9 +406,8 @@
   margin-right: 8%;
   margin-left: 8%;
 
+  border-radius: 4px;
   background-color: $light-background;
-
-  @include border-radius(4px);
   .layer_cart_product {
     position: static;
 
@@ -476,9 +480,8 @@
     padding: 21px 30px 170px 30px;
 
     border-left: 1px solid $base-border-color;
+    border-radius: 0 4px 4px 0;
     background: #fafafa;
-
-    @include border-radius(0px 4px 4px 0px);
     @media (min-width: $screen-lg) {
       // min 1200px
       min-height: 318px;
@@ -491,8 +494,7 @@
       border-top: 1px solid $base-border-color;
       border-left: none;
       // max 991px
-
-      @include border-radius(0px 0 4px 4px);
+      border-radius: 0 0 4px 4px;
     }
     .title {
       font: 400 23px/29px $font-family;
