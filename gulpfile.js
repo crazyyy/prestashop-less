@@ -38,8 +38,8 @@ var paths = {
     dest: basePaths.dest + 'css/'
   },
   fonts: {
-    src: basePaths.src + 'fonts/**',
-    dest: basePaths.dest + 'fonts/'
+    src: basePaths.src + 'font/**',
+    dest: basePaths.dest + 'font/'
   },
   sprite: {
     src: basePaths.src + 'sprite/*'
