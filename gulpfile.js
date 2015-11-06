@@ -20,7 +20,7 @@ var AUTOPREFIXER_BROWSERS = [
 
 var basePaths = {
   src: 'assets/',
-  dest: './' + psProjectDir + '/themes/' + themeName + '/';
+  dest: './' + psProjectDir + '/themes/' + themeName + '/'
 };
 
 var paths = {
