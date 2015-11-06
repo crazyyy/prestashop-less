@@ -1,0 +1,12 @@
+*.log
+thumbs.db
+*.sublime-project
+*.sublime-workspace
+.sass-cache
+.sublime-gulp.cache
+/.hg
+_gsdata_
+node_modules
+npm-debug.log
+sftp-config.json
+sxd
